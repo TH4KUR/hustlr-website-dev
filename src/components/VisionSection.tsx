@@ -1,13 +1,59 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import ImageShowcase from "./ImageShowcase";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const VisionSection = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current || !cardRef.current) return;
+
+    // Fade in and scale up the vision card
+    gsap.fromTo(
+      cardRef.current,
+      {
+        opacity: 0,
+        scale: 0.9,
+        y: 50,
+      },
+      {
+        opacity: 1,
+        scale: 1,
+        y: 0,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          end: "top 30%",
+          scrub: 1,
+          markers: false,
+        },
+      }
+    );
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-32">
+    <section
+      ref={sectionRef}
+      className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-32 scroll-snap-section"
+      style={{
+        scrollSnapAlign: "start",
+        scrollSnapStop: "always",
+      }}
+    >
       <h2 className="font-serif text-3xl sm:text-4xl font-normal mb-24 text-white">
         Hustlr<span style={{ fontFamily: "'Poppins', sans-serif" }}>'</span>s
         Promise
       </h2>
       <div
+        ref={cardRef}
         className="max-w-4xl mx-auto bg-[#1a1a1a] rounded-3xl p-12 sm:p-16 shadow-2xl"
         style={{
           boxShadow:
@@ -45,6 +91,22 @@ const VisionSection = () => {
           </p>
         </div>
       </div>
+
+      {/* Vision imagery */}
+      <ImageShowcase
+        title="Building the Future of Talent"
+        description="Where trust, speed, and opportunity meet"
+        images={[
+          {
+            src: "/images/client-placeholder.jpg",
+            alt: "Community and connection",
+          },
+          {
+            src: "/images/student-placeholder.jpg",
+            alt: "Empowering the next generation",
+          },
+        ]}
+      />
     </section>
   );
 };

@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import ImageShowcase from "./ImageShowcase";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const clientBenefits = [
   "Top 5% Talent Only - We vet every student so you don't have to.",
@@ -26,27 +31,54 @@ function splitBenefit(benefit: string): { main: string; info: string } {
 }
 
 const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
-  const imgEndScroll = 800; // When images are gone
-  // "What Hustlr Offers" section fades in after images are mostly gone
-  const offersOpacity = Math.min(
-    Math.max((scrollY - imgEndScroll + 200) / 200, 0),
-    1
-  );
-
-  // Tabs
   const [tab, setTab] = useState("clients");
   const benefits = tab === "clients" ? clientBenefits : studentBenefits;
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!cardsRef.current) return;
+
+    const cards = cardsRef.current.querySelectorAll(".benefit-card");
+
+    // Fade and slide in cards on scroll
+    cards.forEach((card, i) => {
+      gsap.fromTo(
+        card,
+        {
+          opacity: 0,
+          y: 50,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scrollTrigger: {
+            trigger: card,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+            markers: false,
+          },
+          delay: i * 0.1,
+        }
+      );
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [benefits]);
 
   return (
     <section
-      className="relative flex flex-col items-center justify-center min-h-[70vh] text-center px-4 transition-opacity duration-500"
+      ref={sectionRef}
+      className="relative flex flex-col items-center justify-center min-h-[70vh] text-center px-4 py-24 scroll-snap-section"
       style={{
-        opacity: offersOpacity,
-        pointerEvents: offersOpacity < 0.1 ? "none" : "auto",
-        marginTop: "20vh" /* Push this section down initially */,
+        scrollSnapAlign: "start",
+        scrollSnapStop: "always",
       }}
     >
-      <h2 className=" font-serif text-xl sm:text-2xl md:text-4xl font-normal mb-8 sm:mb-16 text-white">
+      <h2 className="font-serif text-xl sm:text-2xl md:text-4xl font-normal mb-8 sm:mb-16 text-white">
         What Hustlr Offers
       </h2>
       {/* Tabs */}
@@ -73,17 +105,16 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
         </button>
       </div>
       {/* Benefits */}
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4">
-        {benefits.map((benefit, i) => {
+      <div
+        ref={cardsRef}
+        className="w-full max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4"
+      >
+        {benefits.map((benefit) => {
           const { main, info } = splitBenefit(benefit);
           return (
             <div
               key={benefit}
-              className="group relative flex flex-col items-center justify-center w-full aspect-square max-w-[280px] mx-auto  bg-[#111] text-white rounded-2xl shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-white/10"
-              style={{
-                opacity: offersOpacity,
-                transitionDelay: `${i * 60}ms`,
-              }}
+              className="benefit-card group relative flex flex-col items-center justify-center w-full aspect-square max-w-[280px] mx-auto bg-[#111] text-white rounded-2xl shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-white/10"
             >
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-all duration-300 z-0"></div>
               <div className="flex flex-col items-center justify-center h-full w-full px-4 sm:px-6 text-center transition-all duration-300 z-10">
@@ -114,6 +145,26 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
           );
         })}
       </div>
+
+      {/* Image showcase section */}
+      <ImageShowcase
+        title={tab === "clients" ? "For Clients" : "For Students"}
+        description={
+          tab === "clients"
+            ? "Access our platform designed to simplify your hiring process"
+            : "Join thousands of students finding amazing opportunities"
+        }
+        images={[
+          {
+            src: "/images/client-placeholder.jpg",
+            alt: "Client dashboard interface",
+          },
+          {
+            src: "/images/student-placeholder.jpg",
+            alt: "Student swipe interface",
+          },
+        ]}
+      />
     </section>
   );
 };

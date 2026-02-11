@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import ImageShowcase from "./ImageShowcase";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HowHustlrWorks = () => {
   const clientSteps = [
@@ -20,9 +25,68 @@ const HowHustlrWorks = () => {
   ];
   const [activeStep, setActiveStep] = useState(0);
   const [tab, setTab] = useState("clients");
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    // Animate section title fade in
+    gsap.fromTo(
+      sectionRef.current.querySelector("h2"),
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          end: "top 50%",
+          scrub: 1,
+          markers: false,
+        },
+      }
+    );
+
+    // Animate timeline dots
+    if (timelineRef.current) {
+      const dots = timelineRef.current.querySelectorAll("button");
+      dots.forEach((dot, i) => {
+        gsap.fromTo(
+          dot,
+          { scale: 0, opacity: 0 },
+          {
+            scale: 1,
+            opacity: 1,
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 60%",
+              end: "top 30%",
+              scrub: 1,
+              markers: false,
+            },
+            delay: i * 0.05,
+          }
+        );
+      });
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 mt-32">
-      <h2 className=" font-serif text-2xl sm:text-4xl font-normal mb-16 text-white">
+    <section
+      ref={sectionRef}
+      className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 mt-32 scroll-snap-section"
+      style={{
+        scrollSnapAlign: "start",
+        scrollSnapStop: "always",
+      }}
+    >
+      <h2 className="font-serif text-2xl sm:text-4xl font-normal mb-16 text-white">
         How Hustlr Works
       </h2>
 
@@ -59,7 +123,10 @@ const HowHustlrWorks = () => {
       {/* Timeline */}
       <div className="w-full max-w-6xl mx-auto">
         {/* Timeline dots and lines */}
-        <div className="flex flex-wrap justify-center items-center mb-8 sm:mb-16 px-4 gap-2 sm:gap-0">
+        <div
+          ref={timelineRef}
+          className="flex flex-wrap justify-center items-center mb-8 sm:mb-16 px-4 gap-2 sm:gap-0"
+        >
           {[0, 1, 2, 3, 4].map((index) => (
             <div key={index} className="flex items-center">
               <button
@@ -120,6 +187,22 @@ const HowHustlrWorks = () => {
           {tab === "clients" ? clientSteps[5] : studentSteps[5]}
         </div>
       </div>
+
+      {/* Process visualization */}
+      <ImageShowcase
+        title="The Process in Action"
+        description="Watch how Hustlr transforms the way talent meets opportunity"
+        images={[
+          {
+            src: "/images/client-placeholder.jpg",
+            alt: "Step-by-step process visualization",
+          },
+          {
+            src: "/images/student-placeholder.jpg",
+            alt: "Success stories from our platform",
+          },
+        ]}
+      />
     </section>
   );
 };

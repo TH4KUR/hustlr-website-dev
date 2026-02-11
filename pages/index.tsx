@@ -6,6 +6,7 @@ import CtaSection from "@/src/components/CtaSection";
 import WhatHustlrOffers from "@/src/components/WhatHustlrOffers";
 import HowHustlrWorks from "@/src/components/HowHustlrWorks";
 import VisionSection from "@/src/components/VisionSection";
+import ScrollGuideLine from "@/src/components/ScrollGuideLine";
 
 export default function Home() {
   // Scroll logic
@@ -22,17 +23,31 @@ export default function Home() {
         <title>Hustlr</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <main className="relative bg-[#111] text-foreground min-h-[200vh] w-full font-body overflow-x-hidden">
+      <main
+        className="relative bg-[#111] text-foreground w-full font-body overflow-x-hidden"
+        style={{
+          scrollBehavior: "smooth",
+          scrollSnapType: "y mandatory",
+        }}
+      >
+        {/* Animated guide line */}
+        <ScrollGuideLine />
+        
         {/* HEADER BAR */}
         <Nav />
+        
         {/* HERO SECTION CONTAINER */}
         <HomepageHero />
+        
         {/* WHAT HUSTLR OFFERS (Appears after parallax) */}
         <WhatHustlrOffers scrollY={scrollY} />
+        
         {/* HOW HUSTLR WORKS section */}
         <HowHustlrWorks />
+        
         {/* VISION STATEMENT section */}
         <VisionSection />
+        
         {/* Final CTA Section */}
         <CtaSection />
       </main>

@@ -1,10 +1,50 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import MixedHeadline from "./MixedHeadline";
 import { motion } from "framer-motion";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const CtaSection = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const container = sectionRef.current.querySelector(".max-w-4xl");
+    if (container) {
+      gsap.fromTo(
+        container,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
+            end: "top 50%",
+            scrub: 1,
+            markers: false,
+          },
+        }
+      );
+    }
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[50vh] text-center px-4 py-16 sm:py-32  bg-[#111]/20">
+    <section
+      ref={sectionRef}
+      className="relative flex flex-col items-center justify-center min-h-[50vh] text-center px-4 py-16 sm:py-32 bg-[#111]/20 scroll-snap-section"
+      style={{
+        scrollSnapAlign: "start",
+        scrollSnapStop: "always",
+      }}
+    >
       <div className="max-w-4xl mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
