@@ -66,18 +66,19 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
         x: fromX,
       });
 
-      // Animate in on scroll
+      // Animate in on scroll with staggered timing
       gsap.to(card, {
         scrollTrigger: {
           trigger: card,
-          start: "top 80%",
-          end: "top 60%",
-          scrub: 1,
+          start: "top 85%",
+          end: "top 55%",
+          scrub: 1.5,
           markers: false,
         },
         opacity: 1,
         x: 0,
-        duration: 0.8,
+        duration: 1,
+        delay: index * 0.1,
         ease: "power3.out",
       });
     });
@@ -92,17 +93,17 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-20">
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-32">
       <div className="w-full">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif-display font-bold mb-12 text-white">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif-display text-white mb-20 text-balance">
           What Hustlr Offers
         </h2>
 
         {/* Tab Buttons */}
-        <div className="flex justify-center mb-16 gap-4">
+        <div className="flex justify-center mb-24 gap-4">
           <button
             onClick={() => handleTabChange("clients")}
-            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif font-semibold transition-all duration-300 text-base sm:text-lg ${
+            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif transition-all duration-300 text-base sm:text-lg ${
               tab === "clients"
                 ? "bg-white text-black shadow-lg"
                 : "bg-white/10 text-white hover:bg-white/20"
@@ -112,7 +113,7 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
           </button>
           <button
             onClick={() => handleTabChange("students")}
-            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif font-semibold transition-all duration-300 text-base sm:text-lg ${
+            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif transition-all duration-300 text-base sm:text-lg ${
               tab === "students"
                 ? "bg-white text-black shadow-lg"
                 : "bg-white/10 text-white hover:bg-white/20"
@@ -125,7 +126,7 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
         {/* Feature Cards Grid */}
         <div
           ref={containerRef}
-          className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"
+          className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10"
         >
           {benefits.map((benefit, index) => (
             <div
@@ -133,7 +134,7 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
               ref={(el) => {
                 cardsRef.current[index] = el;
               }}
-              className="group relative h-64 sm:h-72 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/20 p-8 sm:p-10 overflow-hidden cursor-pointer transition-all duration-300 hover:border-white/40 hover:shadow-2xl hover:shadow-white/10"
+              className="group relative h-72 sm:h-80 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/20 p-8 sm:p-10 overflow-hidden cursor-pointer transition-all duration-300 hover:border-white/40 hover:shadow-2xl hover:shadow-white/10"
             >
               {/* Animated background gradient on hover */}
               <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -141,7 +142,7 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
               {/* Content */}
               <div className="relative z-10 flex flex-col h-full justify-between">
                 <div>
-                  <h3 className="text-2xl sm:text-3xl font-serif-display font-bold text-white mb-3 text-left">
+                  <h3 className="text-2xl sm:text-3xl font-serif-display text-white mb-4 text-left">
                     {benefit.title}
                   </h3>
                   <p className="text-base sm:text-lg text-white/70 font-serif leading-relaxed text-left">

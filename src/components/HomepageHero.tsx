@@ -20,7 +20,7 @@ const HomepageHero = () => {
     <section className="sticky top-0 h-screen flex items-center justify-center px-4 sm:px-8 md:px-16 lg:px-24">
       {/* Left side content */}
       <div className="relative z-10 flex flex-col items-center sm:items-start text-center sm:text-left max-w-2xl">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif-display font-bold text-white text-pretty mb-6 leading-tight">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif-display text-white text-pretty mb-8 leading-tight">
           {typedBefore}
           {typedBefore.length === breakAfter && <br />}
           {typedAfter}
@@ -28,10 +28,10 @@ const HomepageHero = () => {
             <span className="inline-block w-1 h-10 sm:h-12 align-middle bg-white ml-2 animate-pulse" />
           )}
         </h1>
-        <p className="text-base sm:text-lg md:text-xl text-white/80 font-serif leading-relaxed mb-8 max-w-xl">
+        <p className="text-base sm:text-lg md:text-xl text-white/70 font-serif leading-relaxed mb-12 max-w-xl">
           {heroSubtitle}
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center sm:items-start">
           <a href="/get-started">
             <Button
               size="lg"

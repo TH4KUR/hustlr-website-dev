@@ -18,7 +18,7 @@ const Nav = () => {
       <header className="fixed top-0 left-0 w-full z-40 flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/10 bg-black/80 backdrop-blur-sm">
         <Link
           href="/"
-          className="text-2xl sm:text-3xl tracking-tight text-white font-serif-display font-bold hover:opacity-80 transition-opacity"
+          className="text-2xl sm:text-3xl tracking-tight text-white font-serif-display hover:opacity-80 transition-opacity"
         >
           hustlr
         </Link>

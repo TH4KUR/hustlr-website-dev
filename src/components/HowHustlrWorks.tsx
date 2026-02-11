@@ -59,30 +59,44 @@ const HowHustlrWorks = () => {
   const stepsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current || !stepsContainerRef.current) return;
+    if (!sectionRef.current) return;
 
-    // Create a ScrollTrigger to snap to each step
-    ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: "center center",
-      end: "bottom center",
-      pin: true,
-      pinSpacing: false,
-      onUpdate: (self) => {
-        const progress = self.getVelocity() > 0 ? self.progress : self.progress;
-        const stepIndex = Math.round(progress * 4);
-        setActiveStep(Math.min(Math.max(stepIndex, 0), 4));
+    const steps = tab === "clients" ? clientSteps : studentSteps;
+    const stepCount = steps.length;
+    
+    // Create timeline with scroll-based progression
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "center center",
+        end: () => `+=${window.innerHeight * (stepCount - 1)}`,
+        scrub: 1.2,
+        pin: true,
+        pinSpacing: true,
+        markers: false,
+        snap: {
+          snapTo: 1 / (stepCount - 1), // Snap to each step
+          duration: { min: 0.2, max: 0.8 },
+          delay: 0.1,
+          ease: "power2.inOut",
+        },
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const stepIndex = Math.round(progress * (stepCount - 1));
+          setActiveStep(Math.min(Math.max(stepIndex, 0), stepCount - 1));
+        },
       },
     });
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
-  }, []);
+  }, [tab]);
 
   const handleTabChange = (newTab: string) => {
     setTab(newTab);
     setActiveStep(0);
+    ScrollTrigger.refresh();
   };
 
   const steps = tab === "clients" ? clientSteps : studentSteps;
@@ -90,18 +104,18 @@ const HowHustlrWorks = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-20"
+      className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-32"
     >
       <div className="w-full">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif-display font-bold mb-12 text-white">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif-display text-white mb-16 text-balance">
           How Hustlr Works
         </h2>
 
         {/* Tab Buttons */}
-        <div className="flex justify-center mb-16 gap-4">
+        <div className="flex justify-center mb-20 gap-4">
           <button
             onClick={() => handleTabChange("clients")}
-            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif font-semibold transition-all duration-300 text-base sm:text-lg ${
+            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif transition-all duration-300 text-base sm:text-lg ${
               tab === "clients"
                 ? "bg-white text-black shadow-lg"
                 : "bg-white/10 text-white hover:bg-white/20"
@@ -111,7 +125,7 @@ const HowHustlrWorks = () => {
           </button>
           <button
             onClick={() => handleTabChange("students")}
-            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif font-semibold transition-all duration-300 text-base sm:text-lg ${
+            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif transition-all duration-300 text-base sm:text-lg ${
               tab === "students"
                 ? "bg-white text-black shadow-lg"
                 : "bg-white/10 text-white hover:bg-white/20"
@@ -122,24 +136,24 @@ const HowHustlrWorks = () => {
         </div>
 
         {/* Timeline Container */}
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto">
           {/* Timeline Progress Dots */}
-          <div className="flex justify-center items-center mb-12 gap-3 sm:gap-6">
+          <div className="flex justify-center items-center mb-16 gap-2 sm:gap-4">
             {steps.map((_, index) => (
               <div key={index} className="flex items-center">
                 <button
                   onClick={() => setActiveStep(index)}
-                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-serif font-bold transition-all duration-300 ${
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-serif transition-all duration-300 ${
                     index <= activeStep
-                      ? "bg-white text-black scale-100"
-                      : "bg-white/20 text-white/50 scale-90"
+                      ? "bg-white text-black"
+                      : "bg-white/20 text-white/50"
                   }`}
                 >
                   {index + 1}
                 </button>
                 {index < steps.length - 1 && (
                   <div
-                    className={`h-1 w-12 sm:w-20 mx-1 sm:mx-2 transition-all duration-300 ${
+                    className={`h-1 w-10 sm:w-16 mx-1 sm:mx-2 transition-all duration-300 ${
                       index < activeStep ? "bg-white" : "bg-white/20"
                     }`}
                   />
@@ -151,19 +165,19 @@ const HowHustlrWorks = () => {
           {/* Step Content */}
           <div
             ref={stepsContainerRef}
-            className="relative min-h-80 flex flex-col items-center justify-center"
+            className="relative min-h-80 flex flex-col items-center justify-center py-20"
           >
             {steps.map((step, index) => (
               <div
                 key={index}
-                className={`absolute w-full transition-all duration-700 ease-out ${
+                className={`absolute w-full px-6 transition-all duration-600 ease-out ${
                   index === activeStep
                     ? "opacity-100 scale-100"
                     : "opacity-0 scale-95 pointer-events-none"
                 }`}
               >
-                <div className="flex flex-col items-center px-4">
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif-display font-bold text-white mb-4 text-balance">
+                <div className="flex flex-col items-center">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif-display text-white mb-6 text-balance">
                     {step.title}
                   </h3>
                   <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-2xl font-serif leading-relaxed">
@@ -175,7 +189,7 @@ const HowHustlrWorks = () => {
           </div>
 
           {/* Trust Message */}
-          <div className="mt-12 sm:mt-16 text-center">
+          <div className="mt-12 sm:mt-20 text-center">
             <p className="text-sm sm:text-base text-white/60 font-serif italic">
               {tab === "clients"
                 ? "Trust built-in every step. Verified clients only. Quality guaranteed or we replace."
