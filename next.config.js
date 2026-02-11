@@ -4,7 +4,7 @@ const nextConfig = {
     domains: ['localhost'],
     unoptimized: true,
   },
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: true,
   experimental: {
     optimizeFonts: true,

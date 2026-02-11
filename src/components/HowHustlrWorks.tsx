@@ -63,9 +63,14 @@ const HowHustlrWorks = () => {
 
     const steps = tab === "clients" ? clientSteps : studentSteps;
     const stepCount = steps.length;
+
+    console.log("[v0] HowHustlrWorks: Initializing GSAP ScrollTrigger", {
+      stepCount,
+      trigger: sectionRef.current,
+    });
     
     // Create timeline with scroll-based progression
-    gsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "center center",
@@ -75,7 +80,7 @@ const HowHustlrWorks = () => {
         pinSpacing: true,
         markers: false,
         snap: {
-          snapTo: 1 / (stepCount - 1), // Snap to each step
+          snapTo: 1 / (stepCount - 1),
           duration: { min: 0.2, max: 0.8 },
           delay: 0.1,
           ease: "power2.inOut",
@@ -83,12 +88,16 @@ const HowHustlrWorks = () => {
         onUpdate: (self) => {
           const progress = self.progress;
           const stepIndex = Math.round(progress * (stepCount - 1));
+          console.log("[v0] Timeline update:", { progress, stepIndex });
           setActiveStep(Math.min(Math.max(stepIndex, 0), stepCount - 1));
         },
       },
     });
 
+    console.log("[v0] Timeline created:", tl);
+
     return () => {
+      console.log("[v0] Cleaning up ScrollTrigger");
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [tab]);

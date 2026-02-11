@@ -54,11 +54,17 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    console.log("[v0] WhatHustlrOffers: Initializing card animations", {
+      cardCount: cardsRef.current.length,
+    });
+
     cardsRef.current.forEach((card, index) => {
       if (!card) return;
 
       const isLeftSide = index % 2 === 0;
       const fromX = isLeftSide ? -200 : 200;
+
+      console.log("[v0] Animating card:", { index, isLeftSide, fromX });
 
       // Set initial state
       gsap.set(card, {
@@ -84,6 +90,7 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
     });
 
     return () => {
+      console.log("[v0] Cleaning up WhatHustlrOffers animations");
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, [tab]);
