@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import ImageShowcase from "./ImageShowcase";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,7 +62,7 @@ const VisionSection = () => {
         }}
       >
         <h3
-          className="text-2xl sm:text-4xl md:text-3xl font-normal mb-8 text-white"
+          className="text-2xl sm:text-3xl font-normal mb-8 text-white"
           style={{
             fontFamily: "'The Seasons', serif",
             lineHeight: "1.6",
@@ -74,7 +73,7 @@ const VisionSection = () => {
         </h3>
 
         <p
-          className="text-xl sm:text-1xl text-white/80 mb-6 leading-relaxed"
+          className="text-base sm:text-lg text-white/80 mb-6 leading-relaxed"
           style={{ fontFamily: "'Ovo', serif", lineHeight: "1.6" }}
         >
           At Hustlr, we're building the first freelance platform that truly
@@ -92,21 +91,6 @@ const VisionSection = () => {
         </div>
       </div>
 
-      {/* Vision imagery */}
-      <ImageShowcase
-        title="Building the Future of Talent"
-        description="Where trust, speed, and opportunity meet"
-        images={[
-          {
-            src: "/images/client-placeholder.jpg",
-            alt: "Community and connection",
-          },
-          {
-            src: "/images/student-placeholder.jpg",
-            alt: "Empowering the next generation",
-          },
-        ]}
-      />
     </section>
   );
 };

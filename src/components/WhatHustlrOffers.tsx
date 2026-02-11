@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import ImageShowcase from "./ImageShowcase";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,25 +40,28 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
 
     const cards = cardsRef.current.querySelectorAll(".benefit-card");
 
-    // Fade and slide in cards on scroll
+    // Staggered card animations with better timing
     cards.forEach((card, i) => {
       gsap.fromTo(
         card,
         {
           opacity: 0,
-          y: 50,
+          y: 60,
+          scale: 0.95,
         },
         {
           opacity: 1,
           y: 0,
+          scale: 1,
           scrollTrigger: {
             trigger: card,
-            start: "top 80%",
-            end: "top 50%",
-            scrub: 1,
+            start: "top 85%",
+            end: "top 55%",
+            scrub: 0.5,
             markers: false,
           },
-          delay: i * 0.1,
+          duration: 0.6,
+          delay: i * 0.08,
         }
       );
     });
@@ -78,13 +80,13 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
         scrollSnapStop: "always",
       }}
     >
-      <h2 className="font-serif text-xl sm:text-2xl md:text-4xl font-normal mb-8 sm:mb-16 text-white">
+      <h2 className="font-serif text-3xl sm:text-4xl md:text-4xl font-normal mb-12 sm:mb-16 text-white">
         What Hustlr Offers
       </h2>
       {/* Tabs */}
-      <div className="flex justify-center mb-8 gap-4 sm:gap-16">
+      <div className="flex justify-center mb-12 gap-4 sm:gap-16">
         <button
-          className={`px-4 sm:px-8 py-2 rounded-t-lg font-semibold transition-all duration-300 text-base sm:text-lg md:text-xl ${
+          className={`px-6 sm:px-10 py-2 rounded-t-lg font-semibold transition-all duration-300 text-base sm:text-lg ${
             tab === "clients"
               ? "bg-white text-black shadow"
               : "bg-transparent text-white border-b-2 border-transparent hover:border-white"
@@ -94,7 +96,7 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
           For Clients
         </button>
         <button
-          className={`px-4 sm:px-8 py-2 rounded-t-lg font-semibold transition-all duration-300 text-base sm:text-lg md:text-xl ${
+          className={`px-6 sm:px-10 py-2 rounded-t-lg font-semibold transition-all duration-300 text-base sm:text-lg ${
             tab === "students"
               ? "bg-white text-black shadow"
               : "bg-transparent text-white border-b-2 border-transparent hover:border-white"
@@ -119,13 +121,13 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
               <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-all duration-300 z-0"></div>
               <div className="flex flex-col items-center justify-center h-full w-full px-4 sm:px-6 text-center transition-all duration-300 z-10">
                 <span
-                  className="font-ovo text-lg sm:text-xl font-normal break-words transition-all duration-300 group-hover:text-black"
+                  className="font-ovo text-base sm:text-lg font-normal break-words transition-all duration-300 group-hover:text-black"
                   style={{ fontFamily: "'Ovo', serif" }}
                 >
                   {main}
                 </span>
                 <span
-                  className="opacity-0 group-hover:opacity-100 mt-3 sm:mt-4 text-base sm:text-lg font-ovo font-normal text-black transition-all duration-300 break-words"
+                  className="opacity-0 group-hover:opacity-100 mt-3 sm:mt-4 text-sm sm:text-base font-ovo font-normal text-black transition-all duration-300 break-words"
                   style={{ fontFamily: "'Ovo', serif" }}
                 >
                   {info}
@@ -146,25 +148,6 @@ const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
         })}
       </div>
 
-      {/* Image showcase section */}
-      <ImageShowcase
-        title={tab === "clients" ? "For Clients" : "For Students"}
-        description={
-          tab === "clients"
-            ? "Access our platform designed to simplify your hiring process"
-            : "Join thousands of students finding amazing opportunities"
-        }
-        images={[
-          {
-            src: "/images/client-placeholder.jpg",
-            alt: "Client dashboard interface",
-          },
-          {
-            src: "/images/student-placeholder.jpg",
-            alt: "Student swipe interface",
-          },
-        ]}
-      />
     </section>
   );
 };

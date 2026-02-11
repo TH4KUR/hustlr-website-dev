@@ -6,7 +6,6 @@ import CtaSection from "@/src/components/CtaSection";
 import WhatHustlrOffers from "@/src/components/WhatHustlrOffers";
 import HowHustlrWorks from "@/src/components/HowHustlrWorks";
 import VisionSection from "@/src/components/VisionSection";
-import ScrollGuideLine from "@/src/components/ScrollGuideLine";
 
 export default function Home() {
   // Scroll logic
@@ -30,9 +29,6 @@ export default function Home() {
           scrollSnapType: "y mandatory",
         }}
       >
-        {/* Animated guide line */}
-        <ScrollGuideLine />
-        
         {/* HEADER BAR */}
         <Nav />
         

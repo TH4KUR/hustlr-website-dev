@@ -50,7 +50,7 @@ const CtaSection = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="font-serif text-2xl sm:text-3xl md:text-4xl font-normal mb-4 sm:mb-8 text-white"
+          className="font-serif text-3xl sm:text-4xl md:text-4xl font-normal mb-6 sm:mb-8 text-white"
         >
           Join the Waitlist
         </motion.h2>

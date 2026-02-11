@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import ImageShowcase from "./ImageShowcase";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,14 +85,14 @@ const HowHustlrWorks = () => {
         scrollSnapStop: "always",
       }}
     >
-      <h2 className="font-serif text-2xl sm:text-4xl font-normal mb-16 text-white">
+      <h2 className="font-serif text-3xl sm:text-4xl font-normal mb-16 text-white">
         How Hustlr Works
       </h2>
 
       {/* Tabs */}
       <div className="flex justify-center mb-16 gap-16">
         <button
-          className={`px-8 py-2 rounded-t-lg font-semibold transition-all duration-300 text-lg sm:text-1xl ${
+          className={`px-8 py-2 rounded-t-lg font-semibold transition-all duration-300 text-base sm:text-lg ${
             tab === "clients"
               ? "bg-white text-black shadow"
               : "bg-transparent text-white border-b-2 border-transparent hover:border-white"
@@ -188,21 +187,6 @@ const HowHustlrWorks = () => {
         </div>
       </div>
 
-      {/* Process visualization */}
-      <ImageShowcase
-        title="The Process in Action"
-        description="Watch how Hustlr transforms the way talent meets opportunity"
-        images={[
-          {
-            src: "/images/client-placeholder.jpg",
-            alt: "Step-by-step process visualization",
-          },
-          {
-            src: "/images/student-placeholder.jpg",
-            alt: "Success stories from our platform",
-          },
-        ]}
-      />
     </section>
   );
 };
