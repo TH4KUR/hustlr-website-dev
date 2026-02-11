@@ -1,49 +1,42 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const VisionSection = () => {
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-32">
-      <h2 className="font-serif text-3xl sm:text-4xl font-normal mb-24 text-white">
-        Hustlr<span style={{ fontFamily: "'Poppins', sans-serif" }}>'</span>s
-        Promise
-      </h2>
-      <div
-        className="max-w-4xl mx-auto bg-[#1a1a1a] rounded-3xl p-12 sm:p-16 shadow-2xl"
-        style={{
-          boxShadow:
-            "0 0 50px rgba(255,255,255,0.1), 0 0 100px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.05)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          backdropFilter: "blur(10px)",
-        }}
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-20 sm:py-32">
+      <motion.h2
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-4xl sm:text-5xl md:text-6xl font-serif-display font-bold mb-16 sm:mb-20 text-white"
       >
-        <h3
-          className="text-2xl sm:text-4xl md:text-3xl font-normal mb-8 text-white"
-          style={{
-            fontFamily: "'The Seasons', serif",
-            lineHeight: "1.6",
-          }}
+        Hustlr's Promise
+      </motion.h2>
+      <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="rounded-2xl p-12 sm:p-16 border border-white/20 bg-white/5 backdrop-blur-sm"
         >
-          To redefine the standard for hiring top college talent — with speed,
-          trust, and zero compromises
-        </h3>
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-serif-display font-bold mb-8 text-white leading-tight text-balance">
+            To redefine the standard for hiring top college talent — with speed,
+            trust, and zero compromises
+          </h3>
 
-        <p
-          className="text-xl sm:text-1xl text-white/80 mb-6 leading-relaxed"
-          style={{ fontFamily: "'Ovo', serif", lineHeight: "1.6" }}
-        >
-          At Hustlr, we're building the first freelance platform that truly
-          cares for both sides — where trust isn't a feature, it's a commitment.
-        </p>
-
-        <div className="space-y-4">
-          <p className="text-2xl sm:text-2xl text-white font-normal">
-            This is the new future of freelancing.
-            <br />
-            <span className="mt-4 block">
-              Powered by Gen Z. Protected by Hustlr.
-            </span>
+          <p className="text-lg sm:text-xl text-white/70 mb-10 leading-relaxed font-serif">
+            At Hustlr, we're building the first freelance platform that truly
+            cares for both sides — where trust isn't a feature, it's a commitment.
           </p>
-        </div>
+
+          <div className="space-y-4 text-lg sm:text-xl text-white font-serif leading-relaxed">
+            <p>This is the new future of freelancing.</p>
+            <p className="text-white/80">
+              Powered by Gen Z. Protected by Hustlr.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,118 +1,174 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const clientBenefits = [
-  "Top 5% Talent Only - We vet every student so you don't have to.",
-  "Swipe to Hire - Simplified, quick hiring.",
-  "Find Future Employees - Discover students you may want to recruit full-time.",
-  "Replacement Guarantee - If it's not right, we fix it.",
+  {
+    title: "Top 5% Talent Only",
+    description: "We vet every student so you don't have to.",
+  },
+  {
+    title: "Swipe to Hire",
+    description: "Simplified, quick hiring process.",
+  },
+  {
+    title: "Find Future Employees",
+    description: "Discover students you may want to recruit full-time.",
+  },
+  {
+    title: "Replacement Guarantee",
+    description: "If it's not right, we fix it.",
+  },
 ];
 
 const studentBenefits = [
-  "Easy job discovery — Swipe, match, and start fast.",
-  "Work with real clients — No fake gigs, ever.",
-  "Gain real world experience — Build a strong portfolio.",
-  "Get paid fast & fair — Escrow-protected payouts.",
+  {
+    title: "Easy Job Discovery",
+    description: "Swipe, match, and start fast.",
+  },
+  {
+    title: "Work with Real Clients",
+    description: "No fake gigs, ever.",
+  },
+  {
+    title: "Real World Experience",
+    description: "Build a strong portfolio.",
+  },
+  {
+    title: "Get Paid Fast & Fair",
+    description: "Escrow-protected payouts.",
+  },
 ];
 
-function splitBenefit(benefit: string): { main: string; info: string } {
-  const match = benefit.match(/(.+?)[\u2013\u2014-]+(.+)/);
-  if (match) {
-    return {
-      main: match[1].trim(),
-      info: match[2].trim(),
-    };
-  }
-  return { main: benefit, info: "" };
-}
-
 const WhatHustlrOffers = ({ scrollY }: { scrollY: number }) => {
-  const imgEndScroll = 800; // When images are gone
-  // "What Hustlr Offers" section fades in after images are mostly gone
-  const offersOpacity = Math.min(
-    Math.max((scrollY - imgEndScroll + 200) / 200, 0),
-    1
-  );
-
-  // Tabs
   const [tab, setTab] = useState("clients");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+
   const benefits = tab === "clients" ? clientBenefits : studentBenefits;
 
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    cardsRef.current.forEach((card, index) => {
+      if (!card) return;
+
+      const isLeftSide = index % 2 === 0;
+      const fromX = isLeftSide ? -200 : 200;
+
+      // Set initial state
+      gsap.set(card, {
+        opacity: 0,
+        x: fromX,
+      });
+
+      // Animate in on scroll
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: "top 80%",
+          end: "top 60%",
+          scrub: 1,
+          markers: false,
+        },
+        opacity: 1,
+        x: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, [tab]);
+
+  const handleTabChange = (newTab: string) => {
+    setTab(newTab);
+  };
+
   return (
-    <section
-      className="relative flex flex-col items-center justify-center min-h-[70vh] text-center px-4 transition-opacity duration-500"
-      style={{
-        opacity: offersOpacity,
-        pointerEvents: offersOpacity < 0.1 ? "none" : "auto",
-        marginTop: "20vh" /* Push this section down initially */,
-      }}
-    >
-      <h2 className=" font-serif text-xl sm:text-2xl md:text-4xl font-normal mb-8 sm:mb-16 text-white">
-        What Hustlr Offers
-      </h2>
-      {/* Tabs */}
-      <div className="flex justify-center mb-8 gap-4 sm:gap-16">
-        <button
-          className={`px-4 sm:px-8 py-2 rounded-t-lg font-semibold transition-all duration-300 text-base sm:text-lg md:text-xl ${
-            tab === "clients"
-              ? "bg-white text-black shadow"
-              : "bg-transparent text-white border-b-2 border-transparent hover:border-white"
-          }`}
-          onClick={() => setTab("clients")}
+    <section className="relative flex flex-col items-center justify-center min-h-screen text-center px-4 py-20">
+      <div className="w-full">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif-display font-bold mb-12 text-white">
+          What Hustlr Offers
+        </h2>
+
+        {/* Tab Buttons */}
+        <div className="flex justify-center mb-16 gap-4">
+          <button
+            onClick={() => handleTabChange("clients")}
+            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif font-semibold transition-all duration-300 text-base sm:text-lg ${
+              tab === "clients"
+                ? "bg-white text-black shadow-lg"
+                : "bg-white/10 text-white hover:bg-white/20"
+            }`}
+          >
+            For Clients
+          </button>
+          <button
+            onClick={() => handleTabChange("students")}
+            className={`px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-serif font-semibold transition-all duration-300 text-base sm:text-lg ${
+              tab === "students"
+                ? "bg-white text-black shadow-lg"
+                : "bg-white/10 text-white hover:bg-white/20"
+            }`}
+          >
+            For Students
+          </button>
+        </div>
+
+        {/* Feature Cards Grid */}
+        <div
+          ref={containerRef}
+          className="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8"
         >
-          For Clients
-        </button>
-        <button
-          className={`px-4 sm:px-8 py-2 rounded-t-lg font-semibold transition-all duration-300 text-base sm:text-lg md:text-xl ${
-            tab === "students"
-              ? "bg-white text-black shadow"
-              : "bg-transparent text-white border-b-2 border-transparent hover:border-white"
-          }`}
-          onClick={() => setTab("students")}
-        >
-          For Students
-        </button>
-      </div>
-      {/* Benefits */}
-      <div className="w-full max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 px-4">
-        {benefits.map((benefit, i) => {
-          const { main, info } = splitBenefit(benefit);
-          return (
+          {benefits.map((benefit, index) => (
             <div
-              key={benefit}
-              className="group relative flex flex-col items-center justify-center w-full aspect-square max-w-[280px] mx-auto  bg-[#111] text-white rounded-2xl shadow-lg transition-all duration-300 cursor-pointer overflow-hidden border border-white/10"
-              style={{
-                opacity: offersOpacity,
-                transitionDelay: `${i * 60}ms`,
+              key={index}
+              ref={(el) => {
+                cardsRef.current[index] = el;
               }}
+              className="group relative h-64 sm:h-72 rounded-xl bg-gradient-to-br from-white/5 to-white/[0.02] border border-white/20 p-8 sm:p-10 overflow-hidden cursor-pointer transition-all duration-300 hover:border-white/40 hover:shadow-2xl hover:shadow-white/10"
             >
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-100 transition-all duration-300 z-0"></div>
-              <div className="flex flex-col items-center justify-center h-full w-full px-4 sm:px-6 text-center transition-all duration-300 z-10">
-                <span
-                  className="font-ovo text-lg sm:text-xl font-normal break-words transition-all duration-300 group-hover:text-black"
-                  style={{ fontFamily: "'Ovo', serif" }}
-                >
-                  {main}
-                </span>
-                <span
-                  className="opacity-0 group-hover:opacity-100 mt-3 sm:mt-4 text-base sm:text-lg font-ovo font-normal text-black transition-all duration-300 break-words"
-                  style={{ fontFamily: "'Ovo', serif" }}
-                >
-                  {info}
-                </span>
+              {/* Animated background gradient on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+              {/* Content */}
+              <div className="relative z-10 flex flex-col h-full justify-between">
+                <div>
+                  <h3 className="text-2xl sm:text-3xl font-serif-display font-bold text-white mb-3 text-left">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-base sm:text-lg text-white/70 font-serif leading-relaxed text-left">
+                    {benefit.description}
+                  </p>
+                </div>
+
+                {/* Icon placeholder */}
+                <div className="w-12 h-12 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors duration-300 flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-white/60 group-hover:text-white/80 transition-colors duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </div>
               </div>
-              {/* Shadow/enlarge on hover */}
-              <style jsx>{`
-                .group:hover,
-                .group:focus {
-                  box-shadow:
-                    0 8px 32px 0 rgba(0, 0, 0, 0.25),
-                    0 1.5px 8px 0 #fff2;
-                  transform: scale(1.05);
-                }
-              `}</style>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,55 +1,50 @@
 import React, { useState } from "react";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import MobileMenu from "./MobileMenu";
 
 const links = [
-  { href: "/", label: "home" },
-
-  { href: "/top5", label: "top 5%" },
-  { href: "/get-started", label: "get started" },
+  { href: "/", label: "Home" },
+  { href: "/top5", label: "Top 5%" },
+  { href: "/get-started", label: "Get Started" },
 ];
 
 const Nav = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-40 flex items-center justify-between px-4 sm:px-6 py-4 border-b border-white/10 bg-[#101010] font-serif">
+      <header className="fixed top-0 left-0 w-full z-40 flex items-center justify-between px-4 sm:px-8 py-5 border-b border-white/10 bg-black/80 backdrop-blur-sm">
         <Link
           href="/"
-          className=" font-serif text-xl sm:text-2xl tracking-tight text-white"
+          className="text-2xl sm:text-3xl tracking-tight text-white font-serif-display font-bold hover:opacity-80 transition-opacity"
         >
-          hustlr.
+          hustlr
         </Link>
+
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-8">
+        <nav className="hidden md:flex gap-2 items-center">
           {links.map((link, i) => (
-            <Link
-              href={link.href}
-              key={i}
-              className="text-white/90 hover:text-white border-b border-black hover:border-white  transition-all text-lg font-normal"
-            >
-              {link.label}
+            <Link href={link.href} key={i}>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white/80 hover:text-white hover:bg-white/10 transition-all text-base font-serif"
+              >
+                {link.label}
+              </Button>
             </Link>
           ))}
         </nav>
+
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMobileMenuOpen(true)}
-          className="md:hidden text-white/80 hover:text-white"
+          className="md:hidden p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+          aria-label="Open menu"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
+          <Menu size={24} />
         </button>
       </header>
 
@@ -57,6 +52,7 @@ const Nav = () => {
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
+        links={links}
       />
     </>
   );

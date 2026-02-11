@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-// import MixedHeadline from "./MixedHeadline";
 import { useSplitTypewriter } from "./TypeWriter";
+import { Button } from "@/components/ui/button";
 
 const HomepageHero = () => {
   const heroHeadline = "Hire The Top 5% of India's Student Talent";
   const breakAfter = heroHeadline.indexOf("5%") + "5%".length;
   const heroSubtitle =
-    "Hustlr is the fastest, easiest way to hire pre-vetted Gen Z students for design, content, tech, and research gigs — in hours, not weeks. Swipe right, get matched.";
+    "Hustlr is the fastest, easiest way to hire pre-vetted Gen Z students for design, content, tech, and research gigs — in hours, not weeks.";
 
   const [typedBefore, typedAfter] = useSplitTypewriter(
     heroHeadline,
@@ -20,42 +20,27 @@ const HomepageHero = () => {
     <section className="sticky top-0 h-screen flex items-center justify-center px-4 sm:px-8 md:px-16 lg:px-24">
       {/* Left side content */}
       <div className="relative z-10 flex flex-col items-center sm:items-start text-center sm:text-left max-w-2xl">
-        <h1
-          className=" font-serif text-3xl sm:text-3xl md:text-5xl lg:text-6xl tracking-tight font-normal"
-          style={{
-            fontFamily: "'The Seasons', serif",
-            color: "#fff",
-            textShadow: "0 2px 32px #fff2, 0 0px 0px #fff",
-            letterSpacing: "-1px",
-            lineHeight: 1.1,
-            fontWeight: 400,
-          }}
-        >
-          {/* Remove MixedHeadline usage, just show the text */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif-display font-bold text-white text-pretty mb-6 leading-tight">
           {typedBefore}
           {typedBefore.length === breakAfter && <br />}
           {typedAfter}
           {isTyping && (
-            <span className="inline-block w-2 h-7 align-middle bg-white ml-1 animate-pulse" />
+            <span className="inline-block w-1 h-10 sm:h-12 align-middle bg-white ml-2 animate-pulse" />
           )}
         </h1>
-        <p
-          className="font-body text-base sm:text-lg md:text-xl text-white/90 mt-4"
-          style={{ fontFamily: "'Poppins', sans-serif" }}
-        >
+        <p className="text-base sm:text-lg md:text-xl text-white/80 font-serif leading-relaxed mb-8 max-w-xl">
           {heroSubtitle}
         </p>
-        <div className="flex flex-col items-center sm:items-start mt-8">
-          <a
-            href="/get-started"
-            className="px-6 sm:px-8 py-3 rounded-full bg-white text-black font-semibold shadow-lg hover:scale-105 hover:bg-[#111] hover:text-white border border-white transition-all duration-300"
-          >
-            Hire Now
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-center sm:items-start">
+          <a href="/get-started">
+            <Button
+              size="lg"
+              className="bg-white text-black hover:bg-white/90 font-serif font-semibold text-base rounded-full"
+            >
+              Hire Now
+            </Button>
           </a>
-          <p
-            className="text-sm sm:text-base md:text-xl text-white/60 mt-3"
-            style={{ fontFamily: "'Poppins', sans-serif" }}
-          >
+          <p className="text-sm sm:text-base text-white/60 font-serif">
             3000+ students on the waitlist
           </p>
         </div>
